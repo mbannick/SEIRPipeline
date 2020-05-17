@@ -106,8 +106,7 @@ class SingleGroupODEProcess:
 
         assert np.sum(idx_final) > 2, \
             f'loc_id: {self.loc_id}, not enough non-zero cases data to fit a ' \
-            f'spline. Number of data between date {start_date} and {end_date}' \
-            f' is {np.sum(idx_final)}.'
+            f'spline. Number of data is {np.sum(idx_final)}.'
 
         self.df = df[idx_final].copy()
         date = date[idx_final]
