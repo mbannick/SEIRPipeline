@@ -5,9 +5,9 @@
 """
 from dataclasses import dataclass
 from typing import Dict, Tuple
+import datetime
 import numpy as np
 import pandas as pd
-from datetime import datetime
 from odeopt.ode import RK4
 from odeopt.ode import LinearFirstOrder
 from odeopt.core.utils import linear_interpolate
@@ -85,9 +85,8 @@ class SingleGroupODEProcess:
         self.lag_days = lag_days
         df.sort_values(self.col_date, inplace=True)
         date = pd.to_datetime(df[col_date])
-        self.today = np.datetime64(datetime.today())
-        idx = date < self.today + np.timedelta64(self.day_shift -
-                                                 self.lag_days, 'D')
+        self.today = np.datetime64(datetime.date(year=2020, month=5, day=11))
+        idx = (df['obs_infecs'] == 1)
 
         cases_threshold = 50.0
         start_date = date[df[col_cases] >= cases_threshold].min()
