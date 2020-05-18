@@ -51,10 +51,12 @@ class SingleGroupODEProcess:
                 Dictionary of spline prior options.
         """
         # observations
+        print(df.columns)
         assert col_date in df
         assert col_cases in df
         assert col_pop in df
         assert col_loc_id in df
+        assert 'obs_infecs' in df
         self.col_date = col_date
         self.col_cases = col_cases
         self.col_pop = col_pop
@@ -86,7 +88,9 @@ class SingleGroupODEProcess:
         df.sort_values(self.col_date, inplace=True)
         date = pd.to_datetime(df[col_date])
         self.today = np.datetime64(datetime.date(year=2020, month=5, day=11))
-        idx = (df['obs_infecs'] == 1)
+        # max_obs_date = pd.to_datetime(df.loc[df['cases_draw'] > 0.01, 'date']).max()
+        # idx = (date <= max_obs_date)
+        idx = (df['obs_infecs']==1)
 
         cases_threshold = 50.0
         start_date = date[df[col_cases] >= cases_threshold].min()
