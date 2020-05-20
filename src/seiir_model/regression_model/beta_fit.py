@@ -80,8 +80,6 @@ class BetaRegressorSequential:
             
             regressor = BetaRegressor(covmodel_set)
             regressor.fit_no_random(mr_data, verbose=verbose)
-            if verbose:
-                print(regressor.cov_coef_fixed)
 
             for covmodel, coef in zip(covmodel_set.cov_models[len(covmodels):], regressor.cov_coef_fixed[len(covmodels):]):
                 if covmodel.gprior is not None:
