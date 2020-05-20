@@ -76,10 +76,8 @@ class BetaRegressorSequential:
         if add_intercept:
             covmodels = [CovModel(col_cov='intercept', use_re=True, re_var=np.inf)]
             self.col_covs.insert(0, 'intercept')
-            input_bounds = {'intercept': None}
         else:
             covmodels = []
-            input_bounds = {}
         
         while len(self.ordered_covmodel_sets) > 0:
             new_cov_models = self.ordered_covmodel_sets.pop(0).cov_models
@@ -91,17 +89,11 @@ class BetaRegressorSequential:
                 print(regressor.cov_coef_fixed)
 
             for covmodel, coef in zip(covmodel_set.cov_models[len(covmodels):], regressor.cov_coef_fixed[len(covmodels):]):
-                input_bounds[covmodel.col_cov] = covmodel.bounds
-                covmodel.bounds = np.array([coef, coef])
                 if covmodel.gprior is not None:
                     covmodel.gprior[0] = coef 
                 else:
                     covmodel.gprior = [coef, self.default_std]
             covmodels = covmodel_set.cov_models
-        
-        for covmodel in covmodels:
-            if covmodel.use_re:
-                covmodel.bounds = input_bounds[covmodel.col_cov]
 
         self.regressor = BetaRegressor(CovModelSet(covmodels))
         self.regressor.fit(mr_data, verbose)
