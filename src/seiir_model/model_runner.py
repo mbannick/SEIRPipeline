@@ -73,11 +73,12 @@ class ModelRunner:
             coef_values = {col_name: df_cov_coef[col_name].to_numpy().mean() for col_name in df_cov_coef.columns}
 
             for covmodelset in ordered_covmodel_sets:
-                for covmodel in covmodelset:
-                    if covmodel.gprior is not None:
-                        covmodel.gprior[0] = coef_values[covmodel.col_cov]
-                    else:
-                        covmodel.gprior = np.array([coef_values[covmodel.col_cov], std])
+                for covmodel in covmodelset.cov_models:
+                    if covmodel.col_cov in coef_values:
+                        if covmodel.gprior is not None:
+                            covmodel.gprior[0] = coef_values[covmodel.col_cov]
+                        else:
+                            covmodel.gprior = np.array([coef_values[covmodel.col_cov], std])
         
         self.fit_beta_regression(ordered_covmodel_sets, mr_data, path, std)
 

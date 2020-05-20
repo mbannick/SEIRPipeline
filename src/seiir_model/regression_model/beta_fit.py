@@ -16,7 +16,6 @@ class BetaRegressor:
         self.covmodel_set_fixed = copy.deepcopy(self.covmodel_set)
         for covmodel in self.covmodel_set_fixed.cov_models:
             covmodel.use_re = False 
-            covmodel.gprior = None
 
         self.mr_model_fixed = MRModel(mr_data, self.covmodel_set_fixed)
         self.mr_model_fixed.fit_model()
@@ -91,6 +90,7 @@ class BetaRegressorSequential:
                     covmodel.gprior = [coef, self.default_std]
             covmodels = covmodel_set.cov_models
 
+        covmodels.extend(self.ordered_covmodel_sets.pop(0).cov_models)
         self.regressor = BetaRegressor(CovModelSet(covmodels))
         self.regressor.fit(mr_data, verbose)
         self.cov_coef = self.regressor.cov_coef
