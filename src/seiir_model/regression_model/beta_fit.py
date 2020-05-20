@@ -72,14 +72,10 @@ class BetaRegressorSequential:
         for covmodel_set in self.ordered_covmodel_sets:
             self.col_covs.extend([covmodel.col_cov for covmodel in covmodel_set.cov_models])
     
-    def fit(self, mr_data, verbose=False, add_intercept=True):
-        if add_intercept:
-            covmodels = [CovModel(col_cov='intercept', use_re=True, re_var=np.inf)]
-            self.col_covs.insert(0, 'intercept')
-        else:
-            covmodels = []
+    def fit(self, mr_data, verbose=False):
+        covmodels = []
         
-        while len(self.ordered_covmodel_sets) > 0:
+        while len(self.ordered_covmodel_sets) > 1:
             new_cov_models = self.ordered_covmodel_sets.pop(0).cov_models
             covmodel_set = CovModelSet(covmodels + new_cov_models)
             
