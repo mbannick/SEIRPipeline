@@ -79,6 +79,11 @@ class BetaRegressorSequential:
             covmodel_set = CovModelSet(covmodels + new_cov_models)
             
             regressor = BetaRegressor(covmodel_set)
+            if verbose:
+                print('=' * 20)
+                for covmodel in regressor.covmodel_set.cov_models:
+                    print(covmodel.col_cov, 'gprior:', covmodel.gprior, 'bounds:', covmodel.bounds)
+            
             regressor.fit_no_random(mr_data, verbose=verbose)
 
             for covmodel, coef in zip(covmodel_set.cov_models[len(covmodels):], regressor.cov_coef_fixed[len(covmodels):]):
@@ -90,6 +95,10 @@ class BetaRegressorSequential:
 
         covmodels.extend(self.ordered_covmodel_sets.pop(0).cov_models)
         self.regressor = BetaRegressor(CovModelSet(covmodels))
+        if verbose:
+            print('=' * 20)
+            for covmodel in self.regressor.covmodel_set.cov_models:
+                print(covmodel.col_cov, 'gprior:', covmodel.gprior, 'bounds:', covmodel.bounds)
         self.regressor.fit(mr_data, verbose)
         self.cov_coef = self.regressor.cov_coef
 
