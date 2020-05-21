@@ -6,6 +6,7 @@
 from dataclasses import dataclass
 from typing import Dict, Tuple
 import datetime
+from datetime import date
 import numpy as np
 import pandas as pd
 from odeopt.ode import RK4
@@ -20,7 +21,7 @@ class SingleGroupODEProcess:
                  col_cases,
                  col_pop,
                  col_loc_id,
-                 today=np.datetime64(datetime.today()),
+                 today=np.datetime64(date.today()),
                  day_shift=(8,)*2,
                  lag_days=17,
                  alpha=(0.95,)*2,
