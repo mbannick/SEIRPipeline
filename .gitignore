@@ -6,3 +6,6 @@
 *.swp
 # python compiled files in any directory
 *.pyc
+.ipynb_checkpoints
+.ipynb
+
