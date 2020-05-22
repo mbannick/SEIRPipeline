@@ -5,7 +5,6 @@
 """
 from dataclasses import dataclass
 from typing import Dict, Tuple
-import datetime
 from datetime import date
 import numpy as np
 import pandas as pd
@@ -92,7 +91,7 @@ class SingleGroupODEProcess:
         self.lag_days = lag_days
         df.sort_values(self.col_date, inplace=True)
         date = pd.to_datetime(df[col_date])
-        self.today = np.datetime64(datetime.date(year=2020, month=5, day=11))
+        self.today = np.datetime64(date.today())
         # max_obs_date = pd.to_datetime(df.loc[df['cases_draw'] > 0.01, 'date']).max()
         # idx = (date <= max_obs_date)
         idx = (df['obs_infecs']==1)
