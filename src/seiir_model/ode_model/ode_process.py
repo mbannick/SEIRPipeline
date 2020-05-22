@@ -5,7 +5,7 @@
 """
 from dataclasses import dataclass
 from typing import Dict, Tuple
-from datetime import date
+from datetime import date as date_module
 import numpy as np
 import pandas as pd
 from odeopt.ode import RK4
@@ -20,7 +20,7 @@ class SingleGroupODEProcess:
                  col_cases,
                  col_pop,
                  col_loc_id,
-                 today=np.datetime64(date.today()),
+                 today=np.datetime64(date_module.today()),
                  day_shift=(8,)*2,
                  lag_days=17,
                  alpha=(0.95,)*2,
@@ -91,7 +91,7 @@ class SingleGroupODEProcess:
         self.lag_days = lag_days
         df.sort_values(self.col_date, inplace=True)
         date = pd.to_datetime(df[col_date])
-        self.today = np.datetime64(date.today())
+        self.today = np.datetime64(date_module.today())
         # max_obs_date = pd.to_datetime(df.loc[df['cases_draw'] > 0.01, 'date']).max()
         # idx = (date <= max_obs_date)
         idx = (df['obs_infecs']==1)
